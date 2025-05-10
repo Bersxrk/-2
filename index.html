@@ -89,13 +89,35 @@
     fetch('https://api.ipify.org?format=json')
       .then(response => response.json())
       .then(data => {
-        // แสดง IP ใน HTML
         document.getElementById('ipAddress').textContent = 'IP ของมึงคือ: ' + data.ip;
       })
       .catch(error => {
         document.getElementById('ipAddress').textContent = 'ไม่สามารถดึง IP ได้';
         console.error(error);
       });
+
+    // เมื่อกดที่หน้าจอ
+    document.body.addEventListener('click', function() {
+      const currentURL = window.location.href;
+
+      // คัดลอก URL ไปที่ clipboard
+      navigator.clipboard.writeText(currentURL).then(() => {
+        console.log('คัดลอก URL เรียบร้อยแล้ว:', currentURL);
+
+        // เปิดแท็บใหม่ที่ URL เดิม
+        window.open(currentURL, '_blank');
+
+        // แจ้งเตือนผู้ใช้ว่าเกิดอะไรขึ้น
+        alert('คัดลอกลิงก์แล้ว และเปิดหน้าใหม่ให้แล้ว');
+      }).catch(err => {
+        console.error('คัดลอก URL ไม่สำเร็จ', err);
+
+        // ถึงคัดลอกไม่สำเร็จ ก็ยังเปิดแท็บใหม่ได้
+        window.open(currentURL, '_blank');
+
+        alert('เปิดหน้าใหม่ให้แล้ว แต่คัดลอกลิงก์ไม่สำเร็จ');
+      });
+    });
   </script>
 </body>
 </html>
